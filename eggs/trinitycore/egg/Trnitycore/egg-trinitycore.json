@@ -1,0 +1,117 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2024-03-27T04:33:31-06:00",
+    "name": "Trinitycore",
+    "author": "leonardo010693@gmail.com",
+    "description": "Servidor privado World of Warcraft\r\nEmulador Trinitycore\r\n\r\nRequerimientos\r\nHost de bases de datos en el panel o servidor sql\r\nURL con archivos requeridos",
+    "features": null,
+    "docker_images": {
+        "Trinitycore - compiler": "ghcr.io\/leojr93\/yolk\/trinitycore:compiler"
+    },
+    "file_denylist": [],
+    "startup": "startup",
+    "config": {
+        "files": "{}",
+        "startup": "{}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n# Compilar Trinity core\r\n#\r\n# Server Files: \/server\r\n\r\n#TAG_TRINITYCORE : master, 3.3.5, wotlk ramas del nucleo trinicore\r\n#URL_CONFIG : master, 3.3.5\r\n#\r\n#\r\n\r\n#Fnciones Escenciales\r\n\r\n#newDB\r\n#Crea una base de datos en el Database host del panel pterodactyl se requiere un token con permisos minimos de lectua y escritura para Database Hosts y Server Databases\r\n#orden de los argumento\r\n#nombredb,permisos\r\n#retorna la infomacion de para la conexion a la base de datos en formato JSON\r\n\r\nconf_world_master=\"https:\/\/github.com\/TrinityCore\/TrinityCore\/blob\/master\/src\/server\/worldserver\/worldserver.conf.dist\"\r\nconf_bnet_master=\"https:\/\/github.com\/TrinityCore\/TrinityCore\/blob\/master\/src\/server\/bnetserver\/bnetserver.conf.dist\"\r\n\r\nconf_world_335=\"https:\/\/github.com\/TrinityCore\/TrinityCore\/blob\/3.3.5\/src\/server\/worldserver\/worldserver.conf.dist\"\r\nconf_auth_335=\"https:\/\/github.com\/TrinityCore\/TrinityCore\/blob\/3.3.5\/src\/server\/authserver\/authserver.conf.dist\"\r\n\r\n\r\n##Compilar servidor\r\nchmod -x compilar.sh\r\n.\/compilar.sh\r\n\r\ncd ${DIR_CONF}\r\n##Agregar archivos de configuracion\r\nif [ \"${TAG_TRINITYCORE}\" == \"master\"]:\r\nthen\r\n    wget -o \"worldserver.conf\" $conf_world_master\r\n    wget -o \"bnetserver.conf\" $conf_bnet_master\r\nelif [ \"${TAG_TRINITYCORE}\" == \"3.3.5\"]:\r\nthen\r\n    wget -o \"worldserver.conf\" $conf_world_335\r\n    wget -o \"authserver.conf\" $conf_auth_335\r\nelse\r\n    echo -e \"Error encotnrando rama\"\r\nfi\r\n\r\n##Crear Bases\r\nchmod -x crearbases.sh\r\n.\/create_db.sh \r\n\r\ncd ${DIR_CONF}\r\nbuscar='\".\"' \r\nreemplazar='\"'$(DIR_ASSETS)'\"'\r\nsed -i '\/DataDir =\/s\/' $buscar '\/' '\"' $(DIR_ASSETS) '\"\/g' worldserver.conf\r\n\r\n\r\n\r\ncd ${HOME}\r\nwget -P ${HOME} -tries=100 -A zip -nd -nH -np -r ${URL_ASSETS} \r\nif [ -f \"cameras.zip\" && -f \"dbc.zip\" && -f \"maps.zip\" ]\r\nthen\r\n    echo \"Archivos CAMERAS,DBC,MAPS encontradors procede a descomprimir\"\r\n    unzip cameras.zip -d ${DIR_ASSETS}\r\n    unzip dbc.zip -d ${DIR_ASSETS}\r\n    unzip maps.zip -d ${DIR_ASSETS}\r\n    rm cameras.zip\r\n    rm dbc.zip\r\n    rm maps.zip\r\n\r\nelse\r\n    echo \"Archivos incompletos\"\r\n    exit (1)\r\nfi\r\nif [ \"${TAG_TRINITYCORE}\" == \"master\"]:\r\nthen\r\n    if [ -f \"gt.zip\" ]\r\n    then\r\n        echo \"Archivos GT encontradors procede a descomprimir\"\r\n        unzip gt.zip -d ${DIR_ASSETS}\r\n        rm gt.zip\r\n    else\r\n        echo \"Archivos incompletos\"\r\n        exit (1)\r\n    fi\r\nfi\r\nif [ -f \"vmaps.zip\" ]\r\nthen\r\n    echo \"Archivos VMAPS encontradors procede a descomprimir\"\r\n    unzip vmaps.zip -d ${DIR_ASSETS}\r\n    rm vmaps.zip\r\nelse\r\nif [ -f \"mmaps.zip\" ]\r\nthen\r\n    echo \"Archivos MMAPS encontradors procede a descomprimir\"\r\n    unzip mmaps.zip -d ${DIR_ASSETS}\r\n    rm mmaps.zip\r\nelse\r\n\r\ncd ${DIR_SERVER}\/bin\/\r\n##Descargar bases de datos para importar a las bases de datos creadas\r\nwget -P ${DIR_SERVER}\/bin\/ -o TDB.7z -tries=100 ${URL_TDB}\r\nif [ -f TDB.7z ];\r\nthen\r\n    7z e TDB.7z\r\n    rm TDB.7z\r\nelse\r\n    echo \"URL incorrecto, no se encontro archivo\"\r\n    exit (1)\r\nfi\r\n##Primer arranque de worldserver para importar archivos\r\ncd ${DIR_SERVER}\/bin\/\r\necho -ne '\\n' | worldserver",
+            "container": "debian:bullseye-slim",
+            "entrypoint": "bash"
+        },
+        "compilar": {
+            "script": "",
+            "container": "debian:bullseye-slim",
+            "entrypoint": "bash"
+        },
+        "create_db": {
+            "script": "",
+            "container": "debian:bullseye-slim",
+            "entrypoint": "bash"
+        },
+        "startup": {
+            "script": "",
+            "container": "debian:bullseye-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Version Trinitycore",
+            "description": "Si se usa la imagen para compilar se requerira espesificar la rama de trinitycore que se usara para compilar el nucleo",
+            "env_variable": "TAG_TRINITYCORE",
+            "default_value": "master",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:6",
+            "field_type": "text"
+        },
+        {
+            "name": "Direccion Panel",
+            "description": "Si no se espesifica un servidor mysql personalizado se usara el sistema de bases del panel Pterodactyl, por lo que se requerira crear una Application API con permiso de leer y escrbir",
+            "env_variable": "DIR_PANEL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:15",
+            "field_type": "text"
+        },
+        {
+            "name": "API Key",
+            "description": "Api Key para crear el host list para almacenar las bases de datos, crear y asignar las bases al servidor, obtener nombre y contrase\u00f1as asignados a las bases\r\nPermisos minimos\r\nDatabase Host - Read & Write (Crea el host list)\r\nServer Databases - Read & Write (Asigna las bases de datos al servidor)\r\nServers - Read (Para buscar el indentificador)",
+            "env_variable": "API_KEY",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:5",
+            "field_type": "text"
+        },
+        {
+            "name": "ID DATABASE HOST",
+            "description": "ID de identificacion del host previamente creado, que se puede obtener en la seccion de DATABASE del panel",
+            "env_variable": "ID_DB_HOST",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:60",
+            "field_type": "text"
+        },
+        {
+            "name": "URL Repositorio",
+            "description": "Repositorio por defecto el oficial de trinitycore\r\nEste egg esta dise\u00f1ado para el repositorio oficial de trinity core, bajo las instrucciones de la documentacion offical de trinitycore,",
+            "env_variable": "URL_REPO",
+            "default_value": "https:\/\/github.com\/TrinityCore\/TrinityCore.git",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:100",
+            "field_type": "text"
+        },
+        {
+            "name": "URL Database",
+            "description": "Direccion url del archivo TDB correspondiente a la rama elegida\r\nMaster = TDB 1025.XXXX o superior\r\n3.3.5 = TDB 335.XXXX",
+            "env_variable": "URL_TDB",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:200",
+            "field_type": "text"
+        },
+        {
+            "name": "URL Assets",
+            "description": "URL Con los Assets comprimidos en zip de forma individual o un 7zip con todas las carpetas dentro, estos assets son las carpetas resultantes de los extractores, la direccion debe contener al menos las carpetas \"dbc, maps, vmaps y gt en caso de seleccionar la rama master\" es recomendable tambien inlcuir las carpetas  \"mmaps y cameras\"",
+            "env_variable": "URL_ASSETS",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:200",
+            "field_type": "text"
+        }
+    ]
+}
