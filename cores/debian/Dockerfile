@@ -1,9 +1,8 @@
 FROM        --platform=$TARGETOS/$TARGETARCH debian:bookworm-slim
-##FROM        --platform=$TARGETOS/$TARGETARCH debian:bookworm-slim
 
 LABEL       author="Leonardo Juarez" maintainer="leonardo010693@gmail.com"
 
-LABEL       org.opencontainers.image.source="https://github.com/LeoJR93/yolk"
+LABEL       org.opencontainers.image.source="https://github.com/LeoJR93/yolk/cores/debian"
 LABEL       org.opencontainers.image.licenses=MIT
 LABEL       org.opencontainers.image.description="Docker image debian 12 for pterodactyl panel"
 
