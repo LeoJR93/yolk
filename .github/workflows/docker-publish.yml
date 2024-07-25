@@ -1,4 +1,4 @@
-name: Docker
+name: Docket Image for Peterodactyl Panel Egg
 
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
@@ -9,7 +9,7 @@ on:
   schedule:
     - cron: '35 9 * * *'
   push:
-    branches: [ "main" ]
+    branches: [ "debian" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
