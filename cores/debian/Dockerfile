@@ -15,8 +15,8 @@ RUN         apt update \
 RUN         apt install -y tar wget sed
 
 ## Configure locale
-RUN         update-locale lang=es_MX.UTF-8 \
-            && dpkg-reconfigure --frontend noninteractive locales
+RUN         update-locale lang=en_US.UTF-8
+##            && dpkg-reconfigure --frontend noninteractive locales
             
 RUN         useradd -m -d /home/container -s /bin/bash container
 
