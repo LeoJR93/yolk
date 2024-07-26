@@ -11,7 +11,7 @@ RUN         apt update \
             && apt upgrade -y
 
 ## Install dependencies
-RUN         apt install -y tar wget sed
+RUN         apt install -y tar wget sed ca-certificates
 
 ## Configure locale
 ##RUN         update-locale lang=en_US.UTF-8
