@@ -21,7 +21,8 @@ RUN         useradd -m -d /home/container -s /bin/bash container
 
 ##Environmet
 USER        container
-ENV         USER=container HOME=/home/container
+ENV         USER container 
+ENV         HOME /home/container
 ENV         DEBIAN_FRONTEND noninteractive
 
 WORKDIR     /home/container
