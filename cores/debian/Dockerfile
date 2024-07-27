@@ -4,6 +4,7 @@ LABEL       author="Leonardo Juarez" maintainer="leonardo010693@gmail.com"
 
 LABEL       org.opencontainers.image.source="https://github.com/LeoJR93/yolk/cores/debian"
 LABEL       org.opencontainers.image.licenses=MIT
+LABEL       org.opencontainers.image.version=debian_12
 LABEL       org.opencontainers.image.description="Docker image debian 12 for pterodactyl panel"
 
 ## Update base packages
@@ -21,9 +22,9 @@ RUN         useradd -m -d /home/container -s /bin/bash container
 
 ##Environmet
 USER        container
-ENV         USER container 
-ENV         HOME /home/container
-ENV         DEBIAN_FRONTEND noninteractive
+ENV         USER=container 
+ENV         HOME=/home/container
+ENV         DEBIAN_FRONTEND=noninteractive
 
 WORKDIR     /home/container
 
