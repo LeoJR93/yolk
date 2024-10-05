@@ -12,7 +12,7 @@ RUN         apt update \
             && apt upgrade -y
 
 ## Install dependencies
-RUN         apt install -y tar wget sed ca-certificates libicu-dev libreadline8
+RUN         apt install -y tar wget sed ca-certificates software-properties-common curl apt-transport-https gnupg sed libmysqlclient-dev
 
 ## Configure locale
 ##RUN         update-locale lang=en_US.UTF-8
