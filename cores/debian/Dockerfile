@@ -12,7 +12,7 @@ RUN         apt update \
             && apt upgrade -y
 
 ## Install dependencies
-RUN         apt install -y tar wget sed ca-certificates libicu-dev
+RUN         apt install -y tar wget sed ca-certificates libicu-dev libreadline8
 
 ## Configure locale
 ##RUN         update-locale lang=en_US.UTF-8
