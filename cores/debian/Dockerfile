@@ -12,8 +12,7 @@ RUN         apt update \
             && apt upgrade -y
 
 ## Install dependencies
-RUN         apt install -y tar wget sed ca-certificates software-properties-common curl apt-transport-https gnupg sed libmysqlclient-dev
-
+RUN         apt install -y tar wget sed ca-certificates software-properties-common curl apt-transport-https gnupg
 ## Configure locale
 ##RUN         update-locale lang=en_US.UTF-8
 ##            && dpkg-reconfigure --frontend noninteractive locales
