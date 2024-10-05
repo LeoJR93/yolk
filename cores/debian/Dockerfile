@@ -13,6 +13,7 @@ RUN         apt update \
 
 ## Install dependencies
 RUN         apt install -y tar wget sed ca-certificates software-properties-common curl apt-transport-https gnupg
+RUN         apt -y install git clang cmake make gcc g++ libmysqlclient-dev libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev mysql-server p7zip
 ## Configure locale
 ##RUN         update-locale lang=en_US.UTF-8
 ##            && dpkg-reconfigure --frontend noninteractive locales
