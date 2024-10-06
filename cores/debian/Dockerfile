@@ -13,7 +13,7 @@ RUN         apt update \
 
 ## Install dependencies
 RUN         apt install -y tar wget sed ca-certificates software-properties-common curl apt-transport-https gnupg
-RUN         apt -y install git clang cmake make gcc g++ libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev p7zip
+RUN         apt -y install git clang cmake make gcc g++ libssl-dev libbz2-dev libreadline-dev libncurses-dev libboost-all-dev p7zip mariadb-client
 ## Configure locale
 ##RUN         update-locale lang=en_US.UTF-8
 ##            && dpkg-reconfigure --frontend noninteractive locales
